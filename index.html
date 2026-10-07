@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Vue.js Pet Depot</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    </head>
+    <body>
+        <div id="app">
+            <header>
+                <h1>{{ sitename }}</h1>
+                <button v-on:click="showCheckout">
+                    {{ cartItemCount }}
+                    <span class="fas fa-cart-plus"></span> Checkout
+                </button>   
+            </header>
+            <main>
+                <div v-if="showProduct">
+                <!-- code for product page -->
+                    <!-- <figure>
+                        <img v-bind:src="product.image">
+                    </figure>
+                    <h2 v-text="product.title"></h2>
+                    <p v-html="product.description"></p>
+                    <p>Price: {{product.price}}</p>
+                    <p>Available stock: {{ product.availableInventory }}</p>
+                    
+                    <button v-on:click="addToCart" v-if="canAddToCart">Add to Cart</button>
+                    <button disabled="disabled" v-else>Add to Cart</button>  -->
+                </div>
+                <div v-else>
+                    <h2>Checkout</h2>
+                    <!-- code for checkout page -->
+                    <p>
+                    <strong>First Name:</strong>
+                    <!-- This input field is bound to 'firstName' in the 'order' object -->
+                        <input v-model.trim="order.firstName"/>
+                    </p>
+                    <p>
+                    <strong>Last Name:</strong>
+                    <!-- This input field is bound to 'lastName' in the 'order' object -->
+                        <input v-model.trim="order.lastName"/>
+                    </p>
+                    <p>
+                    <strong>Address:</strong>
+                    <!-- This input field is bound to 'address' in the 'order' object -->
+                        <input v-model="order.address"/>
+                    </p>
+                    <p>
+                    <strong>City:</strong>
+                    <!-- This input field is bound to 'city' in the 'order' object -->
+                        <input v-model="order.city"/>
+                    </p>
+                    <p>
+                    <strong>State:</strong>
+                    <!-- This input field is bound to 'state' in the 'order' object -->
+                        <select v-model="order.state">
+                            <option disabled value="">State</option>
+                            <option v-bind:value="states.AL">AL</option>
+                            <option v-bind:value="states.AR">AR</option>
+                            <option v-bind:value="states.CA">CA</option>
+                            <option v-bind:value="states.NV">NV</option>
+                        </select>
+                    </p>
+                    <p>
+                    <strong>Zip/Postal Code:</strong>
+                    <!-- This input field is bound to 'zip' in the 'order' object -->
+                        <input v-model.number="order.zip"/>
+                    </p>
+                    <p>
+                        <input type="checkbox" id="gift" value="true" v-model="order.gift"
+                        v-bind:true-value="order.sendGift"
+                        v-bind:false-value="order.dontSendGift"> 
+                        <label for="gift">Ship As A Gift</label>
+                    </p>
+                     <p>
+                        <input type="radio" id="home" value="Home" v-model="order.method"> 
+                        <label for="home">Home</label>
+                        <input type="radio" id="business" value="Business" v-model="order.method"> 
+                        <label for="business">Business</label>
+                    </p>
+                    <h2>Order Information:</h2>
+                    <p>First Name: {{ order.firstName }}</p>
+                    <p>Last Name: {{ order.lastName }}</p>
+                    <p>Address: {{ order.address }}</p>
+                    <p>City: {{ order.city }}</p>
+                    <p>State: {{ order.state }}</p>
+                    <p>Zip/Postal: {{ order.zip }}</p>
+                    <p>Gift?: {{ order.gift }}</p>
+                    <p>Method: {{ order.method }}</p>
+
+                    <button v-on:click="submitForm">Place Order</button>
+                </div>
+            </main>
+        </div>
+        <script type="text/javascript">
+            let webstore = new Vue({    //The Vue instance
+                el: '#app',  //The 'option object': DOM mounting point
+                data: {
+                    sitename:"Vue.js Pet Depot",
+                    product: {
+                        id: 1001,
+                        title: "Cat Food, 25lb bag",
+                        description: "A 25 pound bag of <em>irresistible</em>,"+"organic goodness for your cat.",
+                        price: 2000,
+                        image: "images/catFood.jpg",
+                        availableInventory: 10,
+                    },
+                    cart:[],
+                    showProduct: true,
+                    order: {
+                        firstName: '',
+                        lastName: '',
+                        address: '',
+                        city: '',
+                        state: '',
+                        zip: '',
+                        method: 'Home',
+                        gift: false,
+                        sendGift: "Send as a gift",
+                        dontSendGift: "Do not send as a gift",
+
+                    },
+                    states: {
+                        AL: "Alabama",
+                        AR: "Arizona",
+                        CA: "California",
+                        NV: "Nevada",
+                    },
+                },
+                    methods: {
+                    addToCart: function () {
+                        this.cart.push(this.product.id);
+                        this.product.availableInventory--;
+                    },
+
+                    showCheckout() {
+                        this.showProduct = this.showProduct ? false : true;
+                    },
+
+                    submitForm() {
+                        alert('Order submitted!')
+                    },
+                },
+                
+                computed: {
+                    cartItemCount: function() {
+                        return this.cart.length;
+                    },
+                    canAddToCart: function(){
+                        // return this.product.availableInventory > this.cartItemCount;
+                        return this.product.availableInventory > 0;
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
+
